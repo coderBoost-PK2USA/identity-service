@@ -4,6 +4,7 @@ import com.coderboost.identityservice.domain.dto.request.LoginRequest;
 import com.coderboost.identityservice.domain.dto.request.RefreshTokenRequest;
 import com.coderboost.identityservice.domain.dto.response.LoginResponse;
 import com.coderboost.identityservice.service.AuthService;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +15,7 @@ import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @RequestMapping("/api/v1/authenticate")
+@CrossOrigin(origins = {"http://localhost:3000"})
 public class AuthController {
 
     private final AuthService authService;
