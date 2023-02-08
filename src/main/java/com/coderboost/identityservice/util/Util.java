@@ -1,5 +1,7 @@
 package com.coderboost.identityservice.util;
 
+import com.coderboost.identityservice.service.impl.MyUserDetails;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.security.SecureRandom;
@@ -10,17 +12,9 @@ public class Util {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(strength, new SecureRandom());
         return bCryptPasswordEncoder.encode(plainPassword);
     }
-//
-//    public static long getPrincipalId(Authentication authentication) {
-//        MyUserDetails userDetails = (MyUserDetails) authentication.getPrincipal();
-//        return userDetails.getUserId();
-//    }
-//
-//    public static String getPrincipalUserName() {
-//        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        if (principal instanceof UserDetails) {
-//            return ((MyUserDetails) principal).getUsername();
-//        }
-//        return principal.toString();
-//    }
+
+    public static long getPrincipalId(Authentication authentication) {
+        MyUserDetails userDetails = (MyUserDetails) authentication.getPrincipal();
+        return userDetails.getUserId();
+    }
 }

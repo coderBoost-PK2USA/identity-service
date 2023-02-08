@@ -1,6 +1,6 @@
 package com.coderboost.identityservice.service.impl;
 
-import com.coderboost.identityservice.contant.UserStatus;
+import com.coderboost.identityservice.domain.dto.request.ChangePasswordDto;
 import com.coderboost.identityservice.domain.dto.request.UserCreateDto;
 import com.coderboost.identityservice.domain.entity.Role;
 import com.coderboost.identityservice.domain.entity.User;
@@ -52,4 +52,16 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public Boolean changePassword(long userId, ChangePasswordDto changePasswordDto) {
+        changePasswordDto.validatePasswordMatch();
+        return userRepository.findById(userId)
+                .map(user -> {
+                    String encryptedPassword = getEncodedPassword(changePasswordDto.password());
+                    User.builder().password(encryptedPassword).build();
+                    userRepository.save(user);
+                    return true;
+                })
+                .orElseThrow(() -> new RuntimeException("User Not Found!"));
+    }
 }
