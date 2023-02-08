@@ -2,12 +2,14 @@ package com.coderboost.identityservice.service.impl;
 
 import com.coderboost.identityservice.domain.dto.request.ChangePasswordDto;
 import com.coderboost.identityservice.domain.dto.request.UserCreateDto;
+import com.coderboost.identityservice.domain.dto.response.UserDetailsDto;
 import com.coderboost.identityservice.domain.entity.Role;
 import com.coderboost.identityservice.domain.entity.User;
 import com.coderboost.identityservice.repository.RoleRepository;
 import com.coderboost.identityservice.repository.UserRepository;
 import com.coderboost.identityservice.service.UserService;
 import jakarta.transaction.Transactional;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,6 +52,12 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new RuntimeException("Username already exists!");
         }
+    }
+
+    @Override
+    public UserDetailsDto getUserById(long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Username doesn't exist!"));
+        return new UserDetailsDto(user.getName(), user.getEmail(), user.getPhoneNumber(), user.getUserStatus());
     }
 
     @Override

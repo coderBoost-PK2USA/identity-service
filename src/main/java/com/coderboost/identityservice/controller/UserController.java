@@ -2,10 +2,13 @@ package com.coderboost.identityservice.controller;
 
 import com.coderboost.identityservice.domain.dto.request.ChangePasswordDto;
 import com.coderboost.identityservice.domain.dto.request.UserCreateDto;
+import com.coderboost.identityservice.domain.dto.response.UserDetailsDto;
 import com.coderboost.identityservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +29,11 @@ public class UserController {
     @PostMapping
     public void createUser(@RequestBody UserCreateDto requestDto) {
         userService.createUser(requestDto);
+    }
+
+    @GetMapping("{id}")
+    public UserDetailsDto getUserById(@PathVariable long id) {
+        return userService.getUserById(id);
     }
 
     @PreAuthorize("hasAuthority('CUSTOMER')")
