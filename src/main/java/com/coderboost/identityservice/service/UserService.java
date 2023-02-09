@@ -6,7 +6,7 @@ import com.coderboost.identityservice.domain.dto.response.UserDetailsDto;
 
 public interface UserService {
 
-    void createUser(UserCreateDto userCreateDto);
+    UserDetailsDto createUser(UserCreateDto userCreateDto);
 
     UserDetailsDto getUserById(long userId);
 

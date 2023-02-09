@@ -9,14 +9,15 @@ import com.coderboost.identityservice.repository.RoleRepository;
 import com.coderboost.identityservice.repository.UserRepository;
 import com.coderboost.identityservice.service.UserService;
 import jakarta.transaction.Transactional;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.Optional;
 
+import static com.coderboost.identityservice.contant.UserStatus.ACTIVE;
 import static com.coderboost.identityservice.contant.UserStatus.INACTIVE;
+import static com.coderboost.identityservice.mapper.UserMapper.toUserDetailsDto;
 import static com.coderboost.identityservice.util.Util.getEncodedPassword;
 
 @Transactional
@@ -32,7 +33,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void createUser(UserCreateDto userCreateDto) {
+    public UserDetailsDto createUser(UserCreateDto userCreateDto) {
         Optional<User> user = userRepository.findByEmail(userCreateDto.getEmail());
         Role role = roleRepository.findById(userCreateDto.getRoleId()).orElseThrow();
 
@@ -43,12 +44,14 @@ public class UserServiceImpl implements UserService {
                     userCreateDto.getEmail(),
                     getEncodedPassword(userCreateDto.getPassword()),
                     userCreateDto.getPhoneNumber(),
-                    INACTIVE,
+                    role.getRole().equals("OWNER") ? INACTIVE : ACTIVE,
                     role,
                     Instant.now(),
                     Instant.now()
             );
+
             userRepository.save(newUser);
+            return toUserDetailsDto(newUser);
         } else {
             throw new RuntimeException("Username already exists!");
         }
@@ -57,7 +60,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDetailsDto getUserById(long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Username doesn't exist!"));
-        return new UserDetailsDto(user.getName(), user.getEmail(), user.getPhoneNumber(), user.getUserStatus());
+        return toUserDetailsDto(user);
     }
 
     @Override
