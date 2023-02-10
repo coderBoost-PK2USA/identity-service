@@ -1,5 +1,6 @@
 package com.coderboost.identityservice.util;
 
+import com.coderboost.identityservice.service.impl.MyUserDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -8,7 +9,6 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -48,18 +48,19 @@ public class JwtUtil {
         return expiration.before(new Date());
     }
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(MyUserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
-        return doGenerateToken(claims, userDetails.getUsername(), roles);
+        return doGenerateToken(claims, userDetails.getUsername(), userDetails.getUserId(), roles);
     }
 
-    private String doGenerateToken(Map<String, Object> claims, String subject, List<String> roles) {
+    private String doGenerateToken(Map<String, Object> claims, String subject, long userId, List<String> roles) {
         return Jwts.builder()
                 .setClaims(claims)
                 .claim("roles", roles)
+                .claim("userId", userId)
                 .setSubject(subject)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))

@@ -10,5 +10,7 @@ public interface UserService {
 
     UserDetailsDto getUserById(long userId);
 
+    UserDetailsDto getUserByEmail(String email);
+
     Boolean changePassword(long userId, ChangePasswordDto changePasswordDto);
 }

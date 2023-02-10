@@ -40,7 +40,7 @@ public class AuthServiceImpl implements AuthService {
             throw new BadCredentialsException(e.getMessage());
         }
 
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(result.getName());
+        final MyUserDetails userDetails = (MyUserDetails) userDetailsService.loadUserByUsername(result.getName());
         final String accessToken = jwtUtil.generateToken(userDetails);
         final String refreshToken = jwtUtil.generateRefreshToken(loginRequest.getEmail());
         return new LoginResponse(accessToken, refreshToken);

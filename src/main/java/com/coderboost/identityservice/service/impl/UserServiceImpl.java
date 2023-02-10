@@ -64,6 +64,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserDetailsDto getUserByEmail(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Username doesn't exist!"));
+        return toUserDetailsDto(user);
+    }
+
+    @Override
     public Boolean changePassword(long userId, ChangePasswordDto changePasswordDto) {
         changePasswordDto.validatePasswordMatch();
         return userRepository.findById(userId)

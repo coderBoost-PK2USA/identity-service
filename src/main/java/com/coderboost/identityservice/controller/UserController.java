@@ -38,6 +38,11 @@ public class UserController {
         return userService.getUserById(id);
     }
 
+    @GetMapping("/{email}")
+    public UserDetailsDto getUserById(@PathVariable String email) {
+        return userService.getUserByEmail(email);
+    }
+
     @PreAuthorize("hasAuthority('CUSTOMER')")
     @PostMapping("/password")
     public Boolean changePassword(
