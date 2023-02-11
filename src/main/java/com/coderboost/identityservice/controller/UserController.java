@@ -38,8 +38,8 @@ public class UserController {
         return userService.getUserById(id);
     }
 
-    @GetMapping("/{email}")
-    public UserDetailsDto getUserById(@PathVariable String email) {
+    @GetMapping("/email/{email}")
+    public UserDetailsDto getUserByEmail(@PathVariable String email) {
         return userService.getUserByEmail(email);
     }
 
