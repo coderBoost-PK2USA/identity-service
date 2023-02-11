@@ -23,5 +23,12 @@ VALUES (1001, 'Customer User', 'owner@gmail.com', '$2a$12$IKEQb00u5QpZMx4v5zMweu
         '6412337348', 'ACTIVE', 3, '2023-02-07 18:05:54.074477 +00:00',
         '2023-02-07 18:05:54.074477 +00:00'); -- Password => 123
 
+INSERT INTO users
+(id, name, email, password, phone_number, user_status, role_id, updated_at, created_at)
+VALUES (1002, 'Owner User', 'owner_2@gmail.com', '$2a$12$IKEQb00u5QpZMx4v5zMweu.3wrq0pS7XLCHO4yHZ.BW/yvWu1feo2',
+        '6412337348', 'ACTIVE', 3, '2023-02-07 18:05:54.074477 +00:00',
+        '2023-02-07 18:05:54.074477 +00:00'); -- Password => 123
+
+
 
 
